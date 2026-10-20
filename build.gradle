@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'jacoco'
 	id 'org.springframework.boot' version '4.1.1'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
@@ -17,6 +18,10 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+	mockitoAgent
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
@@ -28,8 +33,32 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	mockitoAgent('org.mockito:mockito-core') {
+		transitive = false
+	}
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	// JDK 21+에서 Mockito의 실행 중 self-attach 대신 에이전트로 등록 (https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3)
+	jvmArgumentProviders.add({ ["-javaagent:${configurations.mockitoAgent.singleFile}"] } as CommandLineArgumentProvider)
+	// 에이전트가 bootstrap classpath를 늘려 CDS가 일부 꺼진다는 경고를 없앤다
+	jvmArgs '-Xshare:off'
+	testLogging {
+		events 'failed', 'skipped'
+		exceptionFormat = 'full'
+	}
+}
+
+// 테스트 후 커버리지 리포트 생성: build/reports/jacoco/test/html/index.html
+tasks.named('jacocoTestReport') {
+	dependsOn tasks.named('test')
+	reports {
+		xml.required = true
+		html.required = true
+	}
+}
+
+tasks.named('test') {
+	finalizedBy tasks.named('jacocoTestReport')
 }
