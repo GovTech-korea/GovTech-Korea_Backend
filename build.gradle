@@ -62,3 +62,9 @@ tasks.named('jacocoTestReport') {
 tasks.named('test') {
 	finalizedBy tasks.named('jacocoTestReport')
 }
+
+// Lombok(1.18.48 포함)이 JDK 25에서 sun.misc.Unsafe 경고를 내므로 컴파일러 프로세스에서만 끈다 (JEP 471, 498)
+tasks.withType(JavaCompile).configureEach {
+	options.fork = true
+	options.forkOptions.jvmArgs.add('--sun-misc-unsafe-memory-access=allow')
+}
