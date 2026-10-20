@@ -36,3 +36,13 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: 빌드 및 테스트
         run: ./gradlew build
+      - name: 테스트·커버리지 리포트 업로드
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            build/reports/tests/
+            build/reports/jacoco/
+          if-no-files-found: ignore
+          retention-days: 14
