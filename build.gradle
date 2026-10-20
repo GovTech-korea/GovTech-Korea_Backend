@@ -39,4 +39,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	// JDK 21+에서 Mockito의 실행 중 self-attach 대신 에이전트로 등록 (https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3)
+	jvmArgumentProviders.add({ ["-javaagent:${configurations.mockitoAgent.singleFile}"] } as CommandLineArgumentProvider)
+	// 에이전트가 bootstrap classpath를 늘려 CDS가 일부 꺼진다는 경고를 없앤다
+	jvmArgs '-Xshare:off'
 }
