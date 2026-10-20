@@ -43,4 +43,8 @@ tasks.named('test') {
 	jvmArgumentProviders.add({ ["-javaagent:${configurations.mockitoAgent.singleFile}"] } as CommandLineArgumentProvider)
 	// 에이전트가 bootstrap classpath를 늘려 CDS가 일부 꺼진다는 경고를 없앤다
 	jvmArgs '-Xshare:off'
+	testLogging {
+		events 'failed', 'skipped'
+		exceptionFormat = 'full'
+	}
 }
