@@ -40,3 +40,6 @@ out/
 .claude/
 CLAUDE.md
 CLAUDE.local.md
+
+### macOS ###
+.DS_Store
