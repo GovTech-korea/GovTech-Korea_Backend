@@ -14,8 +14,8 @@ Gradle은 따로 설치하지 않아도 됩니다. 저장소에 포함된 Gradle
 ## 내려받기
 
 ```bash
-git clone https://github.com/GovTech-korea/GovTech-Korea_backend.git
-cd GovTech-Korea_backend
+git clone https://github.com/GovTech-korea/GovTech-Korea_Backend.git
+cd GovTech-Korea_Backend
 git switch develop
 ```
 
