@@ -6,6 +6,9 @@ on:
     # 본문을 고치면 다시 검사한다
     types: [opened, edited, synchronize, reopened]
 
+# 이벤트 본문만 읽으므로 GITHUB_TOKEN 권한이 필요 없다
+permissions: {}
+
 jobs:
   issue-link:
     name: issue-link
