@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [main, develop]
 
+# checkout에 필요한 읽기 권한만 준다 (artifact 업로드는 GITHUB_TOKEN 권한을 쓰지 않음)
+permissions:
+  contents: read
+
 jobs:
   branch-flow:
     name: branch-flow
